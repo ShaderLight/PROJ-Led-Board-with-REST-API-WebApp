@@ -27,16 +27,16 @@ class LoadBalancer:
             if p in text:
                 return False
             
-        picoNum = self.loadSpread.index(self.loadSpread)
+        picoNum = self.loadSpread.index(min(self.loadSpread))
         params = {
             't':text,
             'color':colorLedziak
         }
-        r = requests.put(self.ipAdresses[picoNum] + self.TEXTENDPOINT, params=params)
+        text_response = requests.put(self.ipAdresses[picoNum] + self.TEXTENDPOINT, params=params, timeout=100)
         
-        print(r.status_code)
+        print(text_response.status_code)
 
-        if r.status_code == 201:
+        if text_response.status_code == 201:
             self.loadSpread[picoNum] += len(text)
             self.stripLoad()
             return True
